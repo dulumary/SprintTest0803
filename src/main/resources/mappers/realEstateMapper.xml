@@ -65,6 +65,77 @@
 			AND `price` <= #{price}
 		]]>
 	</select>
+	
+	<insert id="insertRealEstateByObject" parameterType="com.marondal.spring.test.mybatis.model.RealEstate">
+		INSERT INTO
+			`real_estate`
+		(
+			`realtorId`
+ 			, `address`
+ 			, `area`
+ 			, `type`
+ 			, `price`
+ 			, `createdAt`
+ 			, `updatedAt`
+		)
+		VALUES
+		(
+			#{realtorId}
+			, #{address}
+			, #{area}
+			, #{type}
+			, #{price}
+			, now()
+			, now()
+		)
+	</insert>
+
+	<insert id="insertRealEstate" parameterType="map">
+		INSERT INTO
+			`real_estate`
+		(
+			`realtorId`
+ 			, `address`
+ 			, `area`
+ 			, `type`
+ 			, `price`
+ 			, `rentPrice`
+ 			, `createdAt`
+ 			, `updatedAt`
+		)
+		VALUES
+		(
+			#{realtorId}
+			, #{address}
+			, #{area}
+			, #{type}
+			, #{price}
+			, #{rentPrice}
+			, now()
+			, now()
+		)
+		
+	
+	</insert>
+	
+	<update id="updateRealEstate" parameterType="map">
+		UPDATE
+			`real_estate`
+		SET
+			`type` = #{type}
+			, `price` = #{price}
+			, `updatedAt` = now()
+		WHERE
+			`id` = #{id}
+	
+	</update>
+	
+	<delete id="deleteRealEstate" parameterType="int">
+		DELETE FROM
+			`real_estate`
+		WHERE 
+			`id` = #{id}
+	</delete>
 
 
 </mapper>
