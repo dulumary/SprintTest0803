@@ -142,7 +142,7 @@
 		$(document).ready(function() {
 			
 			$("#date").datepicker({
-				dateFormat:"yy년 mm월 dd"
+				dateFormat:"yy년 mm월 dd일"
 			});
 		});
 	

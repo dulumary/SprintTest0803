@@ -1,5 +1,6 @@
 package com.marondal.spring.test.jstl.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class WeatherBO {
 	}
 	
 	public int addWeather(
-			String date
+			Date date
 			, String weather
 			, double temperatures
 			, double precipitation

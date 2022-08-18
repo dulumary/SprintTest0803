@@ -1,5 +1,6 @@
 package com.marondal.spring.test.jstl.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,7 @@ public interface WeatherDAO {
 	public List<Weather> selectWeatherHisotory();
 	
 	public int insertWeather(
-			@Param("date") String date
+			@Param("date") Date date
 			, @Param("weather") String weather
 			, @Param("temperatures") double temperatures
 			, @Param("precipitation") double precipitation
