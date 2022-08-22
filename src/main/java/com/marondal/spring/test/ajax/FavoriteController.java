@@ -56,5 +56,51 @@ public class FavoriteController {
 		
 		return map;
 	}
+	
+	// url을 입력받고, 중복된 상태인지를 알려주는 api
+	// {"is_duplicate":true} or {"is_duplicate":false}
+	
+	@PostMapping("/is_duplicate")
+	@ResponseBody
+	public Map<String, Boolean> isDuplicateUrl(@RequestParam("url") String url) {
+		
+//		boolean isDuplicate = favoriteBO.isDuplicateUrl(url);
+		
+		Map<String, Boolean> map = new HashMap<>();
+		
+//		if(isDuplicate) {
+//			map.put("is_duplicate", true);
+//		} else {
+//			map.put("is_duplicate", false);
+//		}
+		
+//		map.put("is_duplicate", isDuplicate);
+		map.put("is_duplicate", favoriteBO.isDuplicateUrl(url));
+		
+		return map;
+		
+		
+	}
+	
+	// id를 기반으로 즐겨찾기를 삭제하는 기능 api
+	// {"result":"success"} or {"result":"fail"}
+	
+	@GetMapping("/delete")
+	@ResponseBody
+	public Map<String, String> deleteFavorite(@RequestParam("id") int id) {
+		
+		int count = favoriteBO.deleteFavorite(id);
+		
+		Map<String, String> map = new HashMap<>();
+		
+		if(count == 1) {
+			map.put("result", "success");
+		} else {
+			map.put("result", "fail");
+		}
+		
+		return map;
+	}
+	
 
 }

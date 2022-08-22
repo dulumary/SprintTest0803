@@ -20,14 +20,78 @@
 		<label class="mt-3">주소</label>
 		<div class="d-flex">
 			<input type="text" class="form-control" id="urlInput">
-		
+			<button type="button" class="btn btn-success" id="duplicateBtn">중복확인</button>
 		</div>
+		<div class="small text-danger d-none" id="duplicateDiv">중복된 url 입니다</div>
+		<div class="small text-success d-none" id="availableDiv">사용가능한 url 입니다</div>
 	
 		<button type="button" id="addBtn" class="btn btn-success btn-block mt-3">추가</button>
 	</div>
 	
 	<script>
 		$(document).ready(function() {
+			
+			/// 중복 체크 확인 상태 저장 변수
+			var isCheck = false;
+			// 중복 상태 저장 변수 
+			var isDuplicateUrl = true;
+			
+			
+			$("#urlInput").on("input", function() {
+				// 중복체크 확인 상태를 초기화
+				isCheck = false;
+				isDuplicateUrl = true;
+				
+				$("#duplicateDiv").addClass("d-none");
+				$("#availableDiv").addClass("d-none");
+				
+			});
+			
+			
+			$("#duplicateBtn").on("click", function() {
+				let url = $("#urlInput").val();
+				if(url == "") {
+					alert("주소를 입력해주세요");
+					return ;
+				}
+				
+				if(!(url.startsWith("http://") || url.startsWith("https://"))) {
+					alert("주소 형식이 잘못되었습니다");
+					return ;
+				}
+				
+				// ajax를 통해서 url 중복체크 api 사용
+				
+				$.ajax({
+					type:"post"
+					, url:"/ajax/favorite/is_duplicate"
+					, data:{"url":url}
+					, success:function(data) {
+						
+						isCheck = true;
+						
+						// {"is_duplicate":true} or {"is_duplicate":false}
+						if(data.is_duplicate) {
+							// 중복된 상태 div 보여주기 
+							// 사용가능 상태 div 숨기기 
+							isDuplicateUrl = true;
+							$("#duplicateDiv").removeClass("d-none");
+							$("#availableDiv").addClass("d-none");
+							
+						} else {
+							// 중복된 상태 div 숨기기
+							// 사용가능 상태 div 보여주기 
+							isDuplicateUrl = false;
+							$("#duplicateDiv").addClass("d-none");
+							$("#availableDiv").removeClass("d-none");
+						}
+					}
+					, error:function() {
+						alert("중복확인 에러");
+					}
+				});
+				
+			});
 			
 			$("#addBtn").on("click", function() {
 				
@@ -50,6 +114,21 @@
 					alert("주소 형식이 잘못되었습니다");
 					return ;
 				}
+				
+				// url 중복 체크 여부 확인
+				
+				// 중복체크 여부 확인
+				if(!isCheck) {
+					alert("주소 중복체크 여부 확인해주세요!");
+					return ;
+				}
+				
+				// 중복상태 여부 확인
+				if(isDuplicateUrl) {
+					alert("중복된 url 입니다");
+					return ;
+				}
+				
 				
 				// api 호출
 				// ajax 사용

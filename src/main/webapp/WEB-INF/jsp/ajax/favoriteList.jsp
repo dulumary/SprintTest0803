@@ -35,7 +35,7 @@
 					<td>${favorite.id }</td>
 					<td>${favorite.name }</td>
 					<td>${favorite.url }</td>
-					<td><button type="button" class="btn btn-danger btn-sm" ???="3">삭제</button></td>
+					<td><button type="button" class="btn btn-danger btn-sm delete-btn" data-favorite-id="${favorite.id }">삭제</button></td>
 				</tr>
 				</c:forEach>
 			</tbody>
@@ -46,8 +46,36 @@
 	<script>
 		$(document).ready(function() {
 			// class 속성을 활용해서 이벤트를 등록해라!! (여러 버튼에 같은 이벤트를 등록하기 위해서)
-			// 현재 이벤트가 발생한 버튼 객체 가져오기 $(this)
-			// 해당 버튼 객체에 삭제 대상 id 가 포함되어 있어야한다 (data 속성)
+			$(".delete-btn").on("click", function() {
+				
+				// 현재 이벤트가 발생한 버튼 객체 가져오기 $(this)
+				// 해당 버튼 객체에 삭제 대상 id 가 포함되어 있어야한다 (data 속성)
+				let favoriteId = $(this).data("favorite-id");
+				
+				$.ajax({
+					type:"get"
+					, url:"/ajax/favorite/delete"
+					, data:{"id":favoriteId}
+					, success:function(data) {
+						// {"result":"success"} or {"result":"fail"}
+						if(data.result == "success") {
+							location.reload(); // 새로고침
+						} else {
+							alert("삭제 실패");
+						}
+					}
+					, error:function() {
+						alert("삭제 에러!!");
+					}
+				});
+				
+				
+				
+				
+			});
+			
+			
+			
 			
 			
 		});
